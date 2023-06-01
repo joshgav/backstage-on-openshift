@@ -13,3 +13,4 @@ export quay_user_name=${2:-${QUAY_USER_NAME:-${USER}}}
 
 yarn add --cwd packages/app @backstage/plugin-kubernetes
 yarn add --cwd packages/backend @backstage/plugin-kubernetes-backend
+yarn add --cwd packages/app @roadiehq/backstage-plugin-argo-cd

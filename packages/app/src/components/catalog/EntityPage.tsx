@@ -59,6 +59,11 @@ import { ReportIssue } from '@backstage/plugin-techdocs-module-addons-contrib';
 // import Kubernetes plugin
 import { EntityKubernetesContent } from '@backstage/plugin-kubernetes';
 
+import {
+  EntityArgoCDOverviewCard,
+  isArgocdAvailable
+} from '@roadiehq/backstage-plugin-argo-cd';
+
 const techdocsContent = (
   <EntityTechdocsContent>
     <TechDocsAddons>
@@ -73,6 +78,10 @@ const cicdContent = (
   <EntitySwitch>
     <EntitySwitch.Case if={isGithubActionsAvailable}>
       <EntityGithubActionsContent />
+    </EntitySwitch.Case>
+
+    <EntitySwitch.Case if={isArgocdAvailable}>
+      <EntityArgoCDOverviewCard />
     </EntitySwitch.Case>
 
     <EntitySwitch.Case>
