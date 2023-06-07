@@ -63,4 +63,4 @@ Delete the namespace `backstage` (`kubectl delete namespace backstage`) and star
   request a token valid for `365d`.
 
 [EDB Postgres]: https://artifacthub.io/packages/olm/community-operators/cloud-native-postgresql
-[openshift-services/postgres]: ../../openshift-services/postgres
+[openshift-services/postgres]: https://github.com/joshgav/devenv/tree/main/openshift-services/postgres

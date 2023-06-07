@@ -78,4 +78,6 @@ cat "${this_dir}/chart-values.yaml" | \
     envsubst '${bs_app_name} ${quay_user_name}  ${openshift_ingress_domain}' | \
         helm upgrade --install ${bs_app_name} backstage/backstage --values -
 
+oc rollout restart deployment ${bs_app_name}-backstage
+
 echo "INFO: Visit your Backstage instance at https://${bs_app_name}-backstage-backstage.${openshift_ingress_domain}/"
