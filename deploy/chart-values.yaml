@@ -2,6 +2,9 @@ commonAnnotations:
   app.openshift.io/connects-to: >-
     [{"apiVersion":"postgresql.cnpg.io/v1","kind":"Cluster","name":"${bs_app_name}-backstage-pgcluster"}]
   app.openshift.io/vcs-uri: 'https://github.com/joshgav/bs1'
+commonLabels:
+  app: backstage
+  app.kubernetes.io/name: backstage
 backstage:
   image:
     registry: registry-quay-quay.apps.ipi.aws.joshgav.com

@@ -51,9 +51,8 @@ RUN --mount=type=cache,target=/home/node/.cache/yarn,sharing=locked,uid=1000,gid
 COPY --chown=1000:0 packages/backend/dist/bundle.tar.gz ./
 RUN tar xzf bundle.tar.gz && rm bundle.tar.gz
 
-COPY --chown=1000:0 app-config*.yaml catalog-info*.yaml ./
-COPY --chown=1000:0 examples examples
+# uncomment the following line to include local app-config files
+# otherwise you must pass `--config path_to_file` as arguments to the container
+# COPY --chown=1000:0 app-config*.yaml catalog-info*.yaml ./
 
-## TODO: might we need to revert back to the node user?
-# USER node:node
 CMD ["node", "packages/backend"]

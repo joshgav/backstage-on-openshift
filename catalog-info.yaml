@@ -1,14 +1,14 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: spring-apiserver
-  description: A basic API server in Spring.
+  name: backstage
+  description: Backstage instance for cluster
   annotations:
-    backstage.io/kubernetes-namespace: app
-    backstage.io/kubernetes-label-selector: app=spring-apiserver
+    backstage.io/kubernetes-namespace: backstage
+    backstage.io/kubernetes-label-selector: app=backstage
     backstage.io/techdocs-ref: dir:.
-    argocd/app-name: spring-apiserver
-    quay.io/repository-slug: joshgav/spring-apiserver
+    argocd/app-name: bs1-backstage
+    quay.io/repository-slug: joshgav/bs1-backstage
     janus-idp.io/tekton-enabled: 'true'
 spec:
   type: service
