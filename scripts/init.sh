@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
 
 this_dir=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
-root_dir=$(cd ${this_dir}/../.. && pwd)
+root_dir=$(cd ${this_dir}/.. && pwd)
 if [[ -e "${root_dir}/.env" ]]; then source ${root_dir}/.env; fi
 if [[ -e "${this_dir}/.env" ]]; then source ${this_dir}/.env; fi
 
@@ -16,3 +16,4 @@ yarn add --cwd ${root_dir}/packages/app @backstage/plugin-kubernetes
 yarn add --cwd ${root_dir}/packages/backend @backstage/plugin-kubernetes-backend
 yarn add --cwd ${root_dir}/packages/app @roadiehq/backstage-plugin-argo-cd
 yarn add --cwd ${root_dir}/packages/app @janus-idp/backstage-plugin-tekton
+yarn add --cwd ${root_dir}/packages/app @janus-idp/backstage-plugin-quay

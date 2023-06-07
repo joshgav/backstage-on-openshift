@@ -58,13 +58,14 @@ github-org-provider:
 
 proxy:
   '/quay/api':
-    target: https://registry-quay-quay.apps.ipi.aws.joshgav.com/
+    target: https://registry-quay-quay.apps.ipi.aws.joshgav.com
     headers:
       X-Requested-With: 'XMLHttpRequest'
-      # Uncomment the following line to access a private Quay Repository using a token
-      # Authorization: 'Bearer <YOUR TOKEN>'
+      Authorization: 'Bearer ${QUAY_TOKEN}'
     changeOrigin: true
     secure: true
+    pathRewrite:
+      '^/api/proxy/quay/api': '/'
   '/argocd/api':
     target: https://openshift-gitops-server-openshift-gitops.${openshift_ingress_domain}/api/v1
     changeOrigin: true
@@ -139,3 +140,6 @@ ocm:
 
 argocd:
   baseUrl: https://openshift-gitops-server-openshift-gitops.${openshift_ingress_domain}/
+
+quay:
+  uiUrl: 'https://registry-quay-quay.apps.ipi.aws.joshgav.com'

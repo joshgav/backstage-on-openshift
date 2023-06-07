@@ -34,7 +34,7 @@ echo "INFO: apply resources from ${this_dir}/base/*.yaml"
 for file in $(ls ${this_dir}/base/*.yaml); do
     lines=$(cat ${file} | awk '/^[^#].*$/ {print}' | wc -l)
     if [[ ${lines} > 0 ]]; then
-        cat ${file} | envsubst '${bs_app_name} ${ARGOCD_AUTH_TOKEN} ${GITHUB_TOKEN}' | kubectl apply -f -
+        cat ${file} | envsubst '${bs_app_name} ${ARGOCD_AUTH_TOKEN} ${GITHUB_TOKEN} ${QUAY_TOKEN}' | kubectl apply -f -
     fi
 done
 

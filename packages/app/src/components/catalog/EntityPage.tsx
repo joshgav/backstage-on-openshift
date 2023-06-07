@@ -60,6 +60,7 @@ import {
   LatestPipelineRun,
   isTektonCIAvailable
 } from '@janus-idp/backstage-plugin-tekton';
+import { isQuayAvailable, QuayPage } from '@janus-idp/backstage-plugin-quay';
 
 const techdocsContent = (
   <EntityTechdocsContent>
@@ -149,6 +150,10 @@ const serviceEntityPage = (
 
     <EntityLayout.Route path="/tekton" title="Tekton">
       <TektonPage />
+    </EntityLayout.Route>
+
+    <EntityLayout.Route if={isQuayAvailable} path="/quay" title="Quay">
+      <QuayPage />
     </EntityLayout.Route>
 
     <EntityLayout.Route path="/kubernetes" title="Kubernetes">
