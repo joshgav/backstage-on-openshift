@@ -9,9 +9,10 @@ export bs_app_name=${1:-${BS_APP_NAME:-bs1}}
 export quay_user_name=${2:-${QUAY_USER_NAME:-${USER}}}
 
 nvm use --latest --lts
-backstage_version='1.14.1'
-npx "@backstage/create-app@latest" --path "${root_dir}"
+# backstage_version='1.14.1'
+# npx "@backstage/create-app@latest" --path "${root_dir}"
 
 yarn add --cwd ${root_dir}/packages/app @backstage/plugin-kubernetes
 yarn add --cwd ${root_dir}/packages/backend @backstage/plugin-kubernetes-backend
 yarn add --cwd ${root_dir}/packages/app @roadiehq/backstage-plugin-argo-cd
+yarn add --cwd ${root_dir}/packages/app @janus-idp/backstage-plugin-tekton
