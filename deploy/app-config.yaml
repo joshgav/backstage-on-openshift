@@ -122,6 +122,13 @@ kubernetes:
           dashboardApp: openshift
           skipTLSVerify: false
           skipMetricsLookup: false
+  customResources:
+    - group: tekton.dev
+      apiVersion: v1beta1
+      plural: pipelineruns
+    - group: tekton.dev
+      apiVersion: v1beta1
+      plural: taskruns
 
 ocm:
   hub:

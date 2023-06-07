@@ -27,10 +27,6 @@ import {
   isOrphan,
 } from '@backstage/plugin-catalog';
 import {
-  isGithubActionsAvailable,
-  EntityGithubActionsContent,
-} from '@backstage/plugin-github-actions';
-import {
   EntityUserProfileCard,
   EntityGroupProfileCard,
   EntityMembersListCard,
@@ -52,17 +48,18 @@ import {
   RELATION_PART_OF,
   RELATION_PROVIDES_API,
 } from '@backstage/catalog-model';
-
 import { TechDocsAddons } from '@backstage/plugin-techdocs-react';
 import { ReportIssue } from '@backstage/plugin-techdocs-module-addons-contrib';
-
-// import Kubernetes plugin
 import { EntityKubernetesContent } from '@backstage/plugin-kubernetes';
-
 import {
   EntityArgoCDOverviewCard,
   isArgocdAvailable
 } from '@roadiehq/backstage-plugin-argo-cd';
+import {
+  TektonPage,
+  LatestPipelineRun,
+  isTektonCIAvailable
+} from '@janus-idp/backstage-plugin-tekton';
 
 const techdocsContent = (
   <EntityTechdocsContent>
@@ -73,15 +70,13 @@ const techdocsContent = (
 );
 
 const cicdContent = (
-  // This is an example of how you can implement your company's logic in entity page.
-  // You can for example enforce that all components of type 'service' should use GitHubActions
-  <EntitySwitch>
-    <EntitySwitch.Case if={isGithubActionsAvailable}>
-      <EntityGithubActionsContent />
-    </EntitySwitch.Case>
-
+  <EntitySwitch renderMultipleMatches='all'>
     <EntitySwitch.Case if={isArgocdAvailable}>
       <EntityArgoCDOverviewCard />
+    </EntitySwitch.Case>
+
+    <EntitySwitch.Case if={isTektonCIAvailable}>
+      <LatestPipelineRun linkTekton />
     </EntitySwitch.Case>
 
     <EntitySwitch.Case>
@@ -152,6 +147,14 @@ const serviceEntityPage = (
       {cicdContent}
     </EntityLayout.Route>
 
+    <EntityLayout.Route path="/tekton" title="Tekton">
+      <TektonPage />
+    </EntityLayout.Route>
+
+    <EntityLayout.Route path="/kubernetes" title="Kubernetes">
+      <EntityKubernetesContent refreshIntervalMs={30000} />
+    </EntityLayout.Route>
+
     <EntityLayout.Route path="/api" title="API">
       <Grid container spacing={3} alignItems="stretch">
         <Grid item md={6}>
@@ -176,10 +179,6 @@ const serviceEntityPage = (
 
     <EntityLayout.Route path="/docs" title="Docs">
       {techdocsContent}
-    </EntityLayout.Route>
-
-    <EntityLayout.Route path="/kubernetes" title="Kubernetes">
-      <EntityKubernetesContent refreshIntervalMs={30000} />
     </EntityLayout.Route>
   </EntityLayout>
 );
