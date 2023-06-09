@@ -5,11 +5,11 @@ metadata:
   description: Backstage instance for cluster
   annotations:
     backstage.io/kubernetes-namespace: backstage
-    backstage.io/kubernetes-label-selector: app=backstage
-    backstage.io/techdocs-ref: dir:.
-    argocd/app-name: bs1-backstage
-    quay.io/repository-slug: joshgav/bs1-backstage
-    janus-idp.io/tekton-enabled: 'true'
+    backstage.io/kubernetes-label-selector: app.kubernetes.io/name=backstage
+    # backstage.io/techdocs-ref: dir:.
+    # argocd/app-name: bs1-backstage
+    # quay.io/repository-slug: joshgav/bs1-backstage
+    # janus-idp.io/tekton-enabled: 'true'
 spec:
   type: service
   owner: josh@joshgav.com
