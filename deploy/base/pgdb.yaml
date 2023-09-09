@@ -1,7 +1,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: ${bs_app_name}-backstage-pgcluster
+  name: backstage-pgcluster
   labels:
     app.kubernetes.io/name: backstage
     app.kubernetes.io/component: pgcluster
