@@ -10,6 +10,9 @@ backstage:
     registry: registry-quay-quay.apps.ipi.aws.joshgav.com
     repository: ${quay_user_name}/${bs_app_name}-backstage
     tag: latest
+    # registry: quay.io
+    # repository: rhdh/rhdh-hub-rhel9
+    # tag: '1.0'
   podAnnotations:
     instrumentation.opentelemetry.io/inject-nodejs: "true"
   extraAppConfig:
