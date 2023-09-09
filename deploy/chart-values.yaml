@@ -1,7 +1,7 @@
 commonAnnotations:
   app.openshift.io/connects-to: >-
-    [{"apiVersion":"postgresql.cnpg.io/v1","kind":"Cluster","name":"${bs_app_name}-backstage-pgcluster"}]
-  app.openshift.io/vcs-uri: 'https://github.com/joshgav/bs1'
+    [{"apiVersion":"postgresql.cnpg.io/v1","kind":"Cluster","name":"backstage-pgcluster"}]
+  app.openshift.io/vcs-uri: 'https://github.com/joshgav/backstage-on-openshift'
 commonLabels:
   app: backstage
   app.kubernetes.io/name: backstage
@@ -13,12 +13,12 @@ backstage:
   podAnnotations:
     instrumentation.opentelemetry.io/inject-nodejs: "true"
   extraAppConfig:
-    - configMapRef: ${bs_app_name}-backstage-app-config
+    - configMapRef: backstage-app-config
       filename: app-config.yaml
   extraVolumes:
     - name: backstage-pgcluster-ca
       secret:
-        secretName: ${bs_app_name}-backstage-pgcluster-ca
+        secretName: backstage-pgcluster-ca
         items:
           - key: ca.crt
             path: ca.crt
@@ -36,7 +36,7 @@ backstage:
       mountPath: /app/github-app-credentials.yaml
       subPath: github-app-credentials.yaml
   extraEnvVarsSecrets:
-    - ${bs_app_name}-backstage-pgcluster-superuser
+    - backstage-pgcluster-superuser
     - github-token
     - argocd-token
     - quay-token

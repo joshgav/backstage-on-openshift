@@ -24,7 +24,7 @@ if [[ "${REBUILD_IMAGE}" == "1" ]]; then
     popd
 fi
 
-ensure_namespace backstage true
+ensure_namespace ${bs_app_name} true
 
 ## TODO: test further, fix image and avoid this
 oc adm policy add-scc-to-user --serviceaccount=default nonroot-v2
@@ -41,11 +41,11 @@ done
 file_path=${this_dir}/app-config.yaml
 if [[ -e "${file_path}" ]]; then
     echo "INFO: applying appconfig configmap from ${file_path}"
-    kubectl delete configmap ${bs_app_name}-backstage-app-config 2> /dev/null
+    kubectl delete configmap backstage-app-config 2> /dev/null
 
     tmpfile=$(mktemp)
     cat "${file_path}" | envsubst '${bs_app_name} ${quay_user_name} ${openshift_ingress_domain}' > ${tmpfile}
-    kubectl create configmap ${bs_app_name}-backstage-app-config \
+    kubectl create configmap backstage-app-config \
         --from-file "$(basename ${file_path})=${tmpfile}"
 else
     echo "INFO: no file found at ${file_path}"
@@ -60,15 +60,15 @@ fi
 
 oc get clusterrolebinding backstage-backend-k8s &> /dev/null
 if [[ $? != 0 ]]; then
-    oc create clusterrolebinding backstage-backend-k8s --clusterrole=backstage-k8s-plugin --serviceaccount=backstage:default
+    oc create clusterrolebinding backstage-backend-k8s --clusterrole=backstage-k8s-plugin --serviceaccount=${bs_app_name}:default
 fi
 oc get clusterrolebinding backstage-backend-ocm &> /dev/null
 if [[ $? != 0 ]]; then
-    oc create clusterrolebinding backstage-backend-ocm --clusterrole=backstage-ocm-plugin --serviceaccount=backstage:default
+    oc create clusterrolebinding backstage-backend-ocm --clusterrole=backstage-ocm-plugin --serviceaccount=${bs_app_name}:default
 fi
 oc get clusterrolebinding backstage-backend-tekton &> /dev/null
 if [[ $? != 0 ]]; then
-    oc create clusterrolebinding backstage-backend-tekton --clusterrole=backstage-tekton-plugin --serviceaccount=backstage:default
+    oc create clusterrolebinding backstage-backend-tekton --clusterrole=backstage-tekton-plugin --serviceaccount=${bs_app_name}:default
 fi
 
 echo "INFO: helm upgrade --install"
@@ -76,8 +76,8 @@ ensure_helm_repo bitnami https://charts.bitnami.com/bitnami 1> /dev/null
 ensure_helm_repo backstage https://backstage.github.io/charts 1> /dev/null
 cat "${this_dir}/chart-values.yaml" | \
     envsubst '${bs_app_name} ${quay_user_name}  ${openshift_ingress_domain}' | \
-        helm upgrade --install ${bs_app_name} backstage/backstage --values -
+        helm upgrade --install backstage backstage/backstage --values -
 
-oc rollout restart deployment ${bs_app_name}-backstage
+oc rollout restart deployment backstage
 
-echo "INFO: Visit your Backstage instance at https://${bs_app_name}-backstage-backstage.${openshift_ingress_domain}/"
+echo "INFO: Visit your Backstage instance at https://backstage-${bs_app_name}.${openshift_ingress_domain}/"

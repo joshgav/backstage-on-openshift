@@ -1,17 +1,17 @@
 app:
   title: Backstage on OpenShift
-  baseUrl: https://${bs_app_name}-backstage-backstage.${openshift_ingress_domain}/
+  baseUrl: https://backstage-${bs_app_name}.${openshift_ingress_domain}/
 
 organization:
   name: Josh @ Red Hat
 
 backend:
-  baseUrl: https://${bs_app_name}-backstage-backstage.${openshift_ingress_domain}/
+  baseUrl: https://backstage-${bs_app_name}.${openshift_ingress_domain}/
   database:
     client: pg
     connection:
       # config options: https://node-postgres.com/apis/client
-      host: ${bs_app_name}-backstage-pgcluster-rw
+      host: backstage-pgcluster-rw
       port: 5432
       user: ${username}
       password: ${password}
