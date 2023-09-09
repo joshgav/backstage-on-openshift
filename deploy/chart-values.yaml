@@ -8,13 +8,13 @@ commonLabels:
 backstage:
   image:
     ## for self-managed Backstage image
-    registry: ${registry_hostname}
-    repository: ${quay_user_name}/${bs_app_name}-backstage
-    tag: latest
+    # registry: ${registry_hostname}
+    # repository: ${quay_user_name}/${bs_app_name}-backstage
+    # tag: latest
     ## for Janus/RHDH image
-    # registry: quay.io
-    # repository: rhdh/rhdh-hub-rhel9
-    # tag: '1.0'
+    registry: ${registry_hostname}
+    repository: rhdh/rhdh-hub-rhel9
+    tag: '1.0'
   podAnnotations:
     instrumentation.opentelemetry.io/inject-nodejs: "true"
   extraAppConfig:
@@ -53,6 +53,6 @@ backstage:
 postgresql:
   enabled: false
 ## for private Backstage images, e.g. Janus/RHDH
-# global:
-#   imagePullSecrets:
-#   - quay.io-pull-secret
+global:
+  imagePullSecrets:
+  - quay.io-pull-secret

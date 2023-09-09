@@ -138,17 +138,18 @@ kubernetes:
       plural: 'routes'
 
 ## for base upstream Argo plugin
-argocd:
-  baseUrl: https://openshift-gitops-server-openshift-gitops.${openshift_ingress_domain}/
-
-## for Roadie Argo plugin, used in Janus/RHDH
+# for base plugin
 # argocd:
-#   appLocatorMethods:
-#     - type: config
-#       instances:
-#         - name: argo
-#           url: https://openshift-gitops-server-openshift-gitops.${openshift_ingress_domain}/
-#           token: ${ARGOCD_AUTH_TOKEN}
+#   baseUrl: https://openshift-gitops-server-openshift-gitops.${openshift_ingress_domain}/
+
+# for Roadie plugin, used in Janus
+argocd:
+  appLocatorMethods:
+    - type: config
+      instances:
+        - name: argo
+          url: https://openshift-gitops-server-openshift-gitops.${openshift_ingress_domain}/
+          token: ${ARGOCD_AUTH_TOKEN}
 
 quay:
   uiUrl: 'https://${registry_hostname}'
