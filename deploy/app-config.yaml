@@ -1,3 +1,15 @@
+enabled:
+  kubernetes: true
+  techdocs: true
+  argocd: true
+  github: true
+  githubOrg: true
+  ocm: true
+  sonarqube: false
+  keycloak: false
+  gitlab: false
+  jenkins: false
+
 app:
   title: Backstage on OpenShift
   baseUrl: https://backstage-${bs_app_name}.${openshift_ingress_domain}/
@@ -6,6 +18,9 @@ organization:
   name: Josh @ Red Hat
 
 backend:
+  auth:
+    keys:
+    - secret: 'replacewithbase64secret'
   baseUrl: https://backstage-${bs_app_name}.${openshift_ingress_domain}/
   database:
     client: pg
@@ -21,27 +36,20 @@ backend:
       ssl:
         ca: # if you have a CA file and want to verify it you can uncomment this section
           $file: /var/run/secrets/backstage-pgcluster-ca
-  # Used for enabling authentication, secret is shared by all backend plugins
-  # See https://backstage.io/docs/tutorials/backend-to-backend-auth for
-  # information on the format
-  # auth:
-  #   keys:
-  #     - secret: ${BACKEND_SECRET}
   listen:
     port: 7007
-  #   # Uncomment the following host directive to bind to specific interfaces
-  #   # host: 127.0.0.1
   csp:
-    connect-src: ["'self'", 'http:', 'https:']
     # Content-Security-Policy directives follow the Helmet format: https://helmetjs.github.io/#reference
     # Default Helmet Content-Security-Policy values can be removed by setting the key to false
+    connect-src: ["'self'", 'http:', 'https:']
   cors:
     origin: http://localhost:3000
     methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
     credentials: true
   cache:
     store: memory
-  # workingDirectory: /tmp # Use this to configure a working directory for the scaffolder, defaults to the OS temp-dir
+  # Use this to configure a working directory for the scaffolder, defaults to the OS temp-dir
+  # workingDirectory: /tmp
 
 integrations:
   github:
@@ -84,6 +92,7 @@ techdocs:
     type: 'local'
 
 auth:
+  environment: development
   # see https://backstage.io/docs/auth/ to learn about auth providers
   providers: {}
 
@@ -108,6 +117,10 @@ catalog:
     # Janus (Red Hat) templates
     - type: url
       target: https://github.com/janus-idp/software-templates/blob/main/showcase-templates.yaml
+  providers:
+    ocm:
+      env:
+        kubernetesPluginRef: local-cluster
 
 kubernetes:
   serviceLocatorMethod:
@@ -116,7 +129,7 @@ kubernetes:
     - type: config
       clusters:
         - url: https://kubernetes.default.svc/
-          name: local
+          name: local-cluster
           caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
           authProvider: serviceAccount
           # don't specify this attribute to force lookup in pod in cluster
@@ -136,13 +149,19 @@ kubernetes:
       apiVersion: 'v1'
       plural: 'routes'
 
-ocm:
-  hub:
-    name: local
-    url: https://kubernetes.default.svc/
+# for base plugin
+# argocd:
+#   baseUrl: https://openshift-gitops-server-openshift-gitops.${openshift_ingress_domain}/
 
+# for Roadie plugin, used in Janus
 argocd:
-  baseUrl: https://openshift-gitops-server-openshift-gitops.${openshift_ingress_domain}/
+  appLocatorMethods:
+    - type: config
+      instances:
+        - name: argo
+          url: https://openshift-gitops-server-openshift-gitops.${openshift_ingress_domain}/
+          token: ${ARGOCD_AUTH_TOKEN}
+
 
 quay:
   uiUrl: 'https://registry-quay-quay.apps.ipi.aws.joshgav.com'
