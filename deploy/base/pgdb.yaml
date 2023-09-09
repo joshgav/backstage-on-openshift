@@ -7,6 +7,6 @@ metadata:
     app.kubernetes.io/component: pgcluster
     app.kubernetes.io/instance: ${bs_app_name}
 spec:
-  instances: 1
+  instances: 2
   storage:
     size: 1Gi
