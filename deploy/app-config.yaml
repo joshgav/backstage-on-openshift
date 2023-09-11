@@ -137,13 +137,23 @@ kubernetes:
       apiVersion: 'v1'
       plural: 'routes'
 
-# for base plugin
+## for base upstream Argo plugin
 argocd:
   baseUrl: https://openshift-gitops-server-openshift-gitops.${openshift_ingress_domain}/
+
+## for Roadie Argo plugin, used in Janus/RHDH
+# argocd:
+#   appLocatorMethods:
+#     - type: config
+#       instances:
+#         - name: argo
+#           url: https://openshift-gitops-server-openshift-gitops.${openshift_ingress_domain}/
+#           token: ${ARGOCD_AUTH_TOKEN}
 
 quay:
   uiUrl: 'https://registry-quay-quay.apps.ipi.aws.joshgav.com'
 
+## this section is used only by Janus/RHDH
 enabled:
   kubernetes: true
   techdocs: true
