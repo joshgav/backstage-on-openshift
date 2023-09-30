@@ -14,7 +14,7 @@ backstage:
     ## for Janus/RHDH image
     registry: ${registry_hostname}
     repository: rhdh/rhdh-hub-rhel9
-    tag: '1.0'
+    tag: next
   podAnnotations:
     instrumentation.opentelemetry.io/inject-nodejs: "true"
   extraAppConfig:
