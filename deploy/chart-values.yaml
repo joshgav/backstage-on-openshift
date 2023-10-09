@@ -8,7 +8,7 @@ commonLabels:
 backstage:
   image:
     ## for self-managed Backstage image
-    registry: registry-quay-quay.apps.ipi.aws.joshgav.com
+    registry: ${registry_hostname}
     repository: ${quay_user_name}/${bs_app_name}-backstage
     tag: latest
     ## for Janus/RHDH image

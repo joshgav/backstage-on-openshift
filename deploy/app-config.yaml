@@ -54,7 +54,7 @@ github-org-provider:
 
 proxy:
   '/quay/api':
-    target: https://registry-quay-quay.apps.ipi.aws.joshgav.com
+    target: https://${registry_hostname}
     headers:
       X-Requested-With: 'XMLHttpRequest'
       Authorization: 'Bearer ${QUAY_TOKEN}'
@@ -151,7 +151,7 @@ argocd:
 #           token: ${ARGOCD_AUTH_TOKEN}
 
 quay:
-  uiUrl: 'https://registry-quay-quay.apps.ipi.aws.joshgav.com'
+  uiUrl: 'https://${registry_hostname}'
 
 ## this section is used only by Janus/RHDH
 enabled:

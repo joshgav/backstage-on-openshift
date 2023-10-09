@@ -34,7 +34,7 @@ echo "INFO: apply resources from ${this_dir}/base/*.yaml"
 for file in $(ls ${this_dir}/base/*.yaml); do
     lines=$(cat ${file} | awk '/^[^#].*$/ {print}' | wc -l)
     if [[ ${lines} > 0 ]]; then
-        cat ${file} | envsubst '${bs_app_name} ${ARGOCD_AUTH_TOKEN} ${GITHUB_TOKEN} ${QUAY_TOKEN}' | kubectl apply -f -
+        cat ${file} | envsubst '${bs_app_name} ${ARGOCD_AUTH_TOKEN} ${GITHUB_TOKEN} ${QUAY_TOKEN} ${registry_hostname}' | kubectl apply -f -
     fi
 done
 
@@ -44,7 +44,7 @@ if [[ -e "${file_path}" ]]; then
     kubectl delete configmap backstage-app-config 2> /dev/null
 
     tmpfile=$(mktemp)
-    cat "${file_path}" | envsubst '${bs_app_name} ${quay_user_name} ${openshift_ingress_domain}' > ${tmpfile}
+    cat "${file_path}" | envsubst '${bs_app_name} ${quay_user_name} ${openshift_ingress_domain} ${registry_hostname}' > ${tmpfile}
     kubectl create configmap backstage-app-config \
         --from-file "$(basename ${file_path})=${tmpfile}"
 else
@@ -75,7 +75,7 @@ echo "INFO: helm upgrade --install"
 ensure_helm_repo bitnami https://charts.bitnami.com/bitnami 1> /dev/null
 ensure_helm_repo backstage https://backstage.github.io/charts 1> /dev/null
 cat "${this_dir}/chart-values.yaml" | \
-    envsubst '${bs_app_name} ${quay_user_name}  ${openshift_ingress_domain}' | \
+    envsubst '${bs_app_name} ${quay_user_name}  ${openshift_ingress_domain} ${registry_hostname}' | \
         helm upgrade --install backstage backstage/backstage --values -
 
 oc rollout restart deployment backstage

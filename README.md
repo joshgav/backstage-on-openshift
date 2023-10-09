@@ -1,8 +1,9 @@
 ## Backstage on OpenShift
 
-Deploy a Backstage portal instance in an OpenShift cluster.
+Deploy a Backstage portal instance in an OpenShift cluster. One instance is
+installed in a dedicated namespace named `bs1` by default.
 
-After deployment edit configMap `bs1-backstage-app-config` to dynamically
+After deployment edit configMap `backstage-app-config` to dynamically
 reconfigure the portal; or change it in the
 [deploy/app-config.yaml](deploy/app-config.yaml) file here and run `deploy.sh`
 to reconfigure. NOTE: **delete the current pod** so the modified configMap is
@@ -16,13 +17,13 @@ configMap, then deleting the pod, then refreshing Backstage.
 - [EDB Postgres][] - [openshift-services/postgres][]
 - Create a Secret named `github-token` with key `GITHUB_TOKEN` with value set to
   a GitHub Token with repo and workflow permissions.
-- Create a Secret name `argocd-token` with key `ARGOCD_AUTHENTICATION_TOKEN` set
+- Create a Secret name `argocd-token` with key `ARGOCD_AUTH_TOKEN` set
   to an admin token for ArgoCD
 
 ## Build and deploy (first time)
 
 1. Install [dependencies](#dependencies)
-1. Clone this repo and change dir: `git clone https://github.com/joshgav/bs1.git
+1. Clone this repo and change dir: `git clone https://github.com/joshgav/backstage-on-openshift.git
 1. Set env vars in `.env` file or via `export`
 1. Run `REBUILD_IMAGE=1 ./deploy/deploy.sh` to build and push the image and
    deploy the system
@@ -31,12 +32,12 @@ configMap, then deleting the pod, then refreshing Backstage.
 
 ## Iterate
 
-- Visit your instance at <https://bs1-backstage-backstage.${openshift_ingress_domain}>,
+- Visit your instance at <https://backstage-bs1.${openshift_ingress_domain}>,
   where `openshift_ingress_domain` is found via `oc get ingresses.config.openshift.io cluster -ojson | jq -r .spec.domain`
 
 - Reconfigure and deploy with `deploy/deploy.sh` (it's idempotent)
 - Rebuild, reconfigure and deploy with `REBUILD_IMAGE=1 deploy/deploy.sh`
-- Follow logs: `kubectl logs --follow deployment/bs1-backstage`
+- Follow logs: `kubectl logs --follow deployment/backstage`
 - Troubleshoot the image: `kubectl run -it --image quay.io/${QUAY_USER_NAME}/bs1-backstage:latest --rm bs-test -- bash`
 
 ## Delete
